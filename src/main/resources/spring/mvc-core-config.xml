@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--import resource="mvc-view-config.xml"/-->
+
+    <context:component-scan base-package="sample.webController"/>
+
+
+    <bean id="test1" class="sample.dbAccess.TestSpringMyBatis"/>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--如果不用spring注解方式@select, 就要指定mapper.xml位置 "configLocation" and "mapperLocations",  但选择其中一种即可-->
+        <!--     <property name="configLocation" value="/WEB-INF/mybatis-config.xml"/> --> <!--this common property is 'configLocation' which is used to specify the location of the MyBatis XML configuration file-->
+        <property name="mapperLocations" value="classpath*:mybatis/**/*.xml" /> <!--This property can be used to specify the location of MyBatis XML mapper files, here is not need MyBatis XML configuration file-->
+
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
+    <!--Registering a mapper-->
+    <!-- Advance use is  <mybatis:scan base-package="org.mybatis.spring.sample.mapper" /> -->
+    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+       <property name="mapperInterface" value="sample.mapper.UserMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <!--Injecting Mappers for business bean, put this type bean to business-config.xml later-->
+     <bean id="fooService" class="sample.service.FooServiceImpl">
+        <property name="userMapper" ref="userMapper" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--tx:jta-transaction-manager /-->
+
+    <!-- ... -->
+
+    <!--<context:property-placeholder location="jdbc.properties"/>-->
+
+
+
+</beans>
