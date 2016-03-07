@@ -1,6 +1,6 @@
 package sample.service;
 
-import sample.mapper.User;
+import sample.model.User;
 import sample.mapper.UserMapper;
 
 /**

@@ -1,4 +1,4 @@
-package sample.mapper;
+package sample.model;
 
 /**
  * Created by matthew2 on 3/5/16.

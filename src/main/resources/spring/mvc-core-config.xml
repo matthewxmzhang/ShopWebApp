@@ -13,7 +13,6 @@
 
     <context:component-scan base-package="sample.webController"/>
 
-
     <bean id="test1" class="sample.dbAccess.TestSpringMyBatis"/>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -24,11 +23,7 @@
 
     </bean>
 
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory" />
-    </bean>
-
-    <!--Registering a mapper-->
+    <!--Registering a mapper, mapper相当于DAO-->
     <!-- Advance use is  <mybatis:scan base-package="org.mybatis.spring.sample.mapper" /> -->
     <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
        <property name="mapperInterface" value="sample.mapper.UserMapper" />
@@ -42,6 +37,11 @@
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--以下是直接调用sqlSession,绕开直接调用mapper的interface方法-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
     </bean>
 
     <!--tx:jta-transaction-manager /-->

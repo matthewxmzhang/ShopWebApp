@@ -1,13 +1,9 @@
 package sample.dbAccess;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import sample.mapper.User;
+import sample.model.User;
 import sample.service.FooService;
-
-import javax.sql.DataSource;
 
 public class TestSpringMyBatis {
 
